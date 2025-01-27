@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">practic</string>
+    <string name="title_home">Home</string>
+    <string name="title_manga">Manga</string>
+    <string name="title_search">Search</string>
+    <string name="title_accaunt">Accaunt</string>
+</resources>
