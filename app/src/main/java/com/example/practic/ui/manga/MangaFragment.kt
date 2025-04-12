@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practic.DetailMangaActivity
 import com.example.practic.R
 import com.example.practic.adapter.AllAdapter
-import com.example.practic.api.RetrofitHelper
 import com.example.practic.data.Manga
 import com.example.practic.data.TopMangaResponse
 import com.example.practic.databinding.FragmentMangaBinding
@@ -74,35 +73,7 @@ class MangaFragment : Fragment() {
     }
 
     private fun fetchMangaData() {
-        val api = RetrofitHelper.api
-        api.getTopManga().enqueue(object : Callback<TopMangaResponse> {
-            override fun onResponse(
-                call: Call<TopMangaResponse>,
-                response: Response<TopMangaResponse>
-            ) {
-                if (response.isSuccessful) {
-                    allMangas = response.body()?.data ?: emptyList()
 
-                    val allMangasSorted = allMangas.sortedBy { it.rank }
-                    allAdapter.setMangaList(allMangasSorted)
-
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Failed to fetch data",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-            override fun onFailure(call: Call<TopMangaResponse>, t: Throwable) {
-                Toast.makeText(
-                    requireContext(),
-                    "Error: ${t.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
     }
     private fun showModalDialog() {
         if (!modalDialog.isShowing) {

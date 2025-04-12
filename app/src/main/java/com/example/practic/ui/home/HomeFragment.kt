@@ -7,20 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practic.DetailMangaActivity
 import com.example.practic.R
 import com.example.practic.adapter.AllAdapter
 import com.example.practic.adapter.TrendingAdapter
-import com.example.practic.api.RetrofitHelper
 import com.example.practic.data.Manga
-import com.example.practic.data.TopMangaResponse
 import com.example.practic.databinding.FragmentHomeBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
@@ -123,38 +117,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchTopManga() {
-        val api = RetrofitHelper.api
-        api.getTopManga().enqueue(object : Callback<TopMangaResponse> {
-            override fun onResponse(
-                call: Call<TopMangaResponse>,
-                response: Response<TopMangaResponse>
-            ) {
-                if (response.isSuccessful) {
-                    allMangas = response.body()?.data ?: emptyList()
 
-                    val popularityMangas = allMangas.sortedByDescending { it.popularity }.take(8)
-                    trendingAdapter.setMangaList(popularityMangas)
-
-                    val allMangasSorted = allMangas.sortedBy { it.rank }.take(8)
-                    allAdapter.setMangaList(allMangasSorted)
-
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Failed to fetch data",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-            override fun onFailure(call: Call<TopMangaResponse>, t: Throwable) {
-                Toast.makeText(
-                    requireContext(),
-                    "Error: ${t.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
     }
     private fun showModalDialog() {
         if (!modalDialog.isShowing) {

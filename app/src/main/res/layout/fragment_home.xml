@@ -157,9 +157,11 @@
             android:id="@+id/button_all"
             android:layout_width="73dp"
             android:layout_height="38dp"
+            android:background="#00FFFFFF"
             android:fontFamily="@font/poppins_400"
             android:text="Все"
             android:textAllCaps="false"
+            android:textColor="#858597"
             android:textSize="14sp"
             app:cornerRadius="20dp" />
 
@@ -204,7 +206,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/all_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/stolbec_mang" />
