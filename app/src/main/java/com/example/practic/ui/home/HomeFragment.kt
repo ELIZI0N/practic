@@ -21,14 +21,10 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var trendingAdapter: TrendingAdapter
     private lateinit var allAdapter: AllAdapter
-    private lateinit var allMangas: List<Manga>
     private lateinit var search_button: View
     private lateinit var width_search_button: View
     private lateinit var filtr_button: View
     private lateinit var more_button: View
-    private lateinit var button_all: View
-    private lateinit var button4: View
-    private lateinit var button5: View
     private lateinit var modalDialog: Dialog
 
     override fun onCreateView(
@@ -72,21 +68,6 @@ class HomeFragment : Fragment() {
 
         more_button = binding.root.findViewById(R.id.more_button)
         more_button.setOnClickListener {
-            showModalDialog()
-        }
-
-        button_all = binding.root.findViewById(R.id.button_all)
-        button_all.setOnClickListener {
-            showModalDialog()
-        }
-
-        button4 = binding.root.findViewById(R.id.button4)
-        button4.setOnClickListener {
-            showModalDialog()
-        }
-
-        button5 = binding.root.findViewById(R.id.button5)
-        button5.setOnClickListener {
             showModalDialog()
         }
     }

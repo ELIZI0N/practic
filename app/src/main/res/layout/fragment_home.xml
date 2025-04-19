@@ -153,42 +153,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trending_recycler">
 
-        <Button
-            android:id="@+id/button_all"
+        <ToggleButton
+            android:id="@+id/toggleButton"
             android:layout_width="73dp"
             android:layout_height="38dp"
-            android:background="#00FFFFFF"
+            android:background="@drawable/my_btn_toggle"
             android:fontFamily="@font/poppins_400"
-            android:text="Все"
+            android:textOff="Все"
+            android:textOn="Все"
             android:textAllCaps="false"
-            android:textColor="#858597"
-            android:textSize="14sp"
-            app:cornerRadius="20dp" />
+            android:textColor="@drawable/toggle_text_color"
+            android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/button4"
+        <ToggleButton
+            android:id="@+id/toggleButton_2"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginHorizontal="10dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/my_btn_toggle"
             android:fontFamily="@font/poppins_400"
-            android:text="Популярные"
+            android:textOff="Популярные"
+            android:textOn="Популярные"
             android:textAllCaps="false"
-            android:textColor="#858597"
-            android:textSize="14sp"
-            app:cornerRadius="20dp" />
+            android:textColor="@drawable/toggle_text_color"
+            android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/button5"
+        <ToggleButton
+            android:id="@+id/toggleButton_3"
             android:layout_width="80dp"
             android:layout_height="38dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/my_btn_toggle"
             android:fontFamily="@font/poppins_400"
-            android:text="Новое"
+            android:textOff="Новое"
+            android:textOn="Новое"
             android:textAllCaps="false"
-            android:textColor="#858597"
-            android:textSize="14sp"
-            app:cornerRadius="20dp" />
+            android:textColor="@drawable/toggle_text_color"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <ScrollView
