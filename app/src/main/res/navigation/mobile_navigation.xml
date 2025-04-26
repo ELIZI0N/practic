@@ -20,8 +20,4 @@
         android:name="com.example.practic.ui.search.SearchFragment"
         tools:layout="@layout/fragment_search" />
 
-    <fragment
-        android:id="@+id/navigation_accaunt"
-        android:name="com.example.practic.ui.accaunt.AccauntFragment"
-        tools:layout="@layout/fragment_accaunt" />
 </navigation>
