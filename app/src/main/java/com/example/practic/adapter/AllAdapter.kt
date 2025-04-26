@@ -10,42 +10,42 @@ import com.bumptech.glide.Glide
 import com.example.practic.R
 import com.example.practic.data.Manga
 
-class AllAdapter(private val onItemClick: (Manga) -> Unit) : RecyclerView.Adapter<AllAdapter.AllViewHolder>() {
+class AllAdapter(private var mangaList: List<Manga>) : RecyclerView.Adapter<AllAdapter.MangaViewHolder>() {
 
-    private var mangaList: List<Manga> = emptyList()
-    fun setMangaList(list: List<Manga>) {
-        mangaList = list
-        notifyDataSetChanged()
-    }
-
-    class AllViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MangaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mangaImage: ImageView = itemView.findViewById(R.id.manga_img_stolb)
         val mangaTitle: TextView = itemView.findViewById(R.id.manga_title_stolb)
-        val mangaAuthor: TextView = itemView.findViewById(R.id.author_manga_stolb)
-        val mangaChapters: TextView = itemView.findViewById(R.id.all_recycler)
+        val authorManga: TextView = itemView.findViewById(R.id.author_manga_stolb)
+        val chapters: TextView = itemView.findViewById(R.id.all_recycler)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.stolbec_mang, parent, false)
-        return AllViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MangaViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.stolbec_mang, parent, false)
+        return MangaViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: AllViewHolder, position: Int) {
-        val manga = mangaList[position]
+    override fun onBindViewHolder(holder: MangaViewHolder, position: Int) {
+        val currentItem = mangaList[position]
+
+        holder.mangaTitle.text = currentItem.name
+        holder.authorManga.text = currentItem.authors
+        holder.chapters.text = currentItem.chapters?.toString() ?: "N/A" // Handle null chapter count
+
+        // Load image using Glide (or Picasso)
         Glide.with(holder.itemView.context)
-            .load(manga.images.image_url.image_url)
+            .load(currentItem.images) // Assuming images is a URL or resource
+            .placeholder(R.drawable.ic_launcher_background) // Replace with your placeholder
+            .error(R.drawable.ic_launcher_foreground) // Replace with your error image
             .into(holder.mangaImage)
-
-        holder.mangaTitle.text = manga.title
-        holder.mangaAuthor.text = manga.authors?.joinToString { it.name } ?: "Неизвестен"
-        holder.mangaChapters.text = "Chapters: ${manga.chapters ?: "Неизвестно"}"
-
-        holder.itemView.setOnClickListener{
-            onItemClick(manga)
-        }
     }
 
     override fun getItemCount(): Int {
         return mangaList.size
+    }
+
+    // Method to update the data in the adapter
+    fun setData(newMangaList: List<Manga>) {
+        mangaList = newMangaList
+        notifyDataSetChanged()
     }
 }

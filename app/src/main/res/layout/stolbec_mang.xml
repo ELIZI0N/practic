@@ -67,17 +67,41 @@
                     app:lineHeight="18dp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/all_recycler"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="15dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/chapter_background"
-                android:fontFamily="@font/poppins_400"
-                android:text="Chapters"
-                android:textColor="#FF6905"
-                android:textSize="10sp"
-                app:lineHeight="15dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/all_recycler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/poppins_400"
+                    android:text="Chapters"
+                    android:textColor="#FF6905"
+                    android:textSize="10sp"
+                    app:lineHeight="15dp" />
+
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:fontFamily="@font/poppins_400"
+                    android:text="глав"
+                    android:textColor="#FF6905"
+                    android:textSize="10sp"
+                    app:lineHeight="15dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -47,23 +47,8 @@ class DetailMangaActivity : AppCompatActivity() {
         description = findViewById(R.id.description)
         backButton = findViewById(R.id.back_button)
 
-        favourites_btn = findViewById(R.id.favourites_btn) // Используем findViewById для favourites_btn
-        read_button = findViewById(R.id.read_button) // Используем findViewById для read_button
-
-        val manga = intent.getParcelableExtra<Manga>("manga")
-
-        if(manga!= null) {
-            Glide.with(this)
-                .load(manga.images.image_url.image_url)
-                .into(imageView)
-
-            mangaTitleTop.text = manga.title
-            mangaTitleBottom.text = manga.title
-            views.text = "Просмотры: ${manga.members ?: "Неизвестно"}"
-            chaptersInfo.text = "Главы: ${manga.chapters ?: "Неизвестно"}"
-            rating.text = manga.score.toString() ?: "Неизвестно"
-            description.text = manga.synopsis ?: "Нет описания"
-        }
+        favourites_btn = findViewById(R.id.favourites_btn)
+        read_button = findViewById(R.id.read_button)
 
         backButton.setOnClickListener{
             onBackPressed()

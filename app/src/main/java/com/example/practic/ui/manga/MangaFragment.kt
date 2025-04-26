@@ -1,32 +1,30 @@
 package com.example.practic.ui.manga
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.practic.DetailMangaActivity
 import com.example.practic.R
 import com.example.practic.adapter.AllAdapter
 import com.example.practic.data.Manga
-import com.example.practic.data.TopMangaResponse
+import com.example.practic.data_base.Repository
 import com.example.practic.databinding.FragmentMangaBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MangaFragment : Fragment() {
 
     private lateinit var binding: FragmentMangaBinding
-    private lateinit var allAdapter: AllAdapter
-    private lateinit var allMangas: List<Manga>
     private lateinit var filterButton: View
     private lateinit var modalDialog: Dialog
+    private lateinit var repository: Repository
+    private lateinit var allAdapter: AllAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +38,8 @@ class MangaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        repository = Repository(requireContext()) // Initialize Repository
+
         modalDialog = Dialog(requireContext()).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             val view = LayoutInflater.from(context).inflate(R.layout.modal_window, null)
@@ -49,7 +49,7 @@ class MangaFragment : Fragment() {
         }
 
         setupRecyclerView()
-        fetchMangaData()
+        loadMangaData() // Load data when the view is created
 
         filterButton = binding.root.findViewById(R.id.filter_btn)
         filterButton.setOnClickListener {
@@ -58,23 +58,20 @@ class MangaFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        allAdapter = AllAdapter { manga ->
-            openDetailMangaActivity(manga)
-        }
-        binding.allRecycler.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = allAdapter
-        }
-    }
-    private fun openDetailMangaActivity(manga: Manga) {
-        val intent = Intent(context, DetailMangaActivity::class.java)
-        intent.putExtra("manga", manga)
-        startActivity(intent)
+        binding.allRecycler.layoutManager = LinearLayoutManager(requireContext())
+        allAdapter = AllAdapter(emptyList()) // Initialize with an empty list
+        binding.allRecycler.adapter = allAdapter
     }
 
-    private fun fetchMangaData() {
-
+    private fun loadMangaData(sortBy: String? = null, sortOrder: String? = null) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val mangaList = repository.getAllMangas(sortBy, sortOrder)
+            withContext(Dispatchers.Main) {
+                allAdapter.setData(mangaList)
+            }
+        }
     }
+
     private fun showModalDialog() {
         if (!modalDialog.isShowing) {
             modalDialog.show()
