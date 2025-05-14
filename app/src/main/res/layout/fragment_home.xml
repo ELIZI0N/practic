@@ -172,8 +172,8 @@
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/my_btn_toggle"
             android:fontFamily="@font/poppins_400"
-            android:textOff="Популярные"
-            android:textOn="Популярные"
+            android:textOff="Много глав"
+            android:textOn="Много глав"
             android:textAllCaps="false"
             android:textColor="@drawable/toggle_text_color"
             android:textSize="14sp" />
