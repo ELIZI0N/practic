@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practic.DetailMangaActivity
 import com.example.practic.adapter.AllAdapter
-import com.example.practic.adapter.PopularityAdapter // Импортируем TrendingAdapter
+import com.example.practic.adapter.PopularityAdapter
 import com.example.practic.data.Manga
 import com.example.practic.data_base.Repository
 import com.example.practic.databinding.FragmentHomeBinding
@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
     private lateinit var toggleButton2: ToggleButton
     private lateinit var toggleButton3: ToggleButton
 
-    private lateinit var popularityAdapter: PopularityAdapter // Используем TrendingAdapter
+    private lateinit var popularityAdapter: PopularityAdapter
     private lateinit var allAdapter: AllAdapter
     private lateinit var repository: Repository
 
@@ -49,14 +49,14 @@ class HomeFragment : Fragment() {
         repository = Repository(requireContext())
 
         toggleButton1 = binding.toggleButton
-        toggleButton2 = binding.toggleButton2
-        toggleButton3 = binding.toggleButton3
+        toggleButton2 = binding.toggleButton2 //Исправлено на toggleButton_2
+        toggleButton3 = binding.toggleButton3 //Исправлено на toggleButton_3
 
         toggleButton1.isChecked = true
 
         setupToggleButtons()
 
-        setupPopularityRecyclerView() // Используем TrendingAdapter
+        setupPopularityRecyclerView()
         setupAllRecyclerView()
 
         fetchTopManga()
@@ -84,19 +84,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupPopularityRecyclerView() {
-        popularityAdapter = PopularityAdapter(emptyList()) { manga ->  // Initialize TrendingAdapter
+        popularityAdapter = PopularityAdapter(emptyList(), onItemClick = { manga: Manga ->
             openDetailMangaActivity(manga)
-        }
-        binding.popularityRecycler.apply {
+        })
+        binding.trendingRecycler.apply { // Исправлено на trendingRecycler
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = popularityAdapter
         }
     }
 
     private fun setupAllRecyclerView() {
-        allAdapter = AllAdapter(emptyList()) { manga ->  // Initialize with click listener
+        allAdapter = AllAdapter(emptyList(), onItemClick = { manga: Manga ->
             openDetailMangaActivity(manga)
-        }
+        })
         binding.allRecycler.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = allAdapter
@@ -137,7 +137,7 @@ class HomeFragment : Fragment() {
                 val topTrending = allManga.sortedBy { it.popularity ?: 0 }.take(8)
 
                 withContext(Dispatchers.Main) {
-                    trendingAdapter.setData(topTrending) // Используем TrendingAdapter
+                    popularityAdapter.setData(topTrending) // Использовать popularityAdapter
                 }
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Error fetching top manga: ${e.message}")
