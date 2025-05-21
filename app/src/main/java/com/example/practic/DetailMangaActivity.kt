@@ -1,77 +1,79 @@
 package com.example.practic
 
-import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
-import android.widget.ImageButton
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.practic.data.Manga
+import com.example.practic.data.MangaType
+import com.example.practic.data_base.Repository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailMangaActivity : AppCompatActivity() {
 
-    private lateinit var imageView: ImageView
-    private lateinit var mangaTitleTop: TextView
-    private lateinit var mangaTitleBottom: TextView
-    private lateinit var views: TextView
-    private lateinit var chaptersInfo: TextView
-    private lateinit var rating: TextView
-    private lateinit var description: TextView
-    private lateinit var backButton: ImageButton
-    private lateinit var favourites_btn: View
-    private lateinit var read_button: View
-    private lateinit var modalDialog: Dialog
+    private lateinit var repository: Repository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.manga_info)
 
-        modalDialog = Dialog(this).apply {
-            requestWindowFeature(Window.FEATURE_NO_TITLE)
-            val view = LayoutInflater.from(context).inflate(R.layout.modal_window, null)
-            setContentView(view)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-            setCancelable(true)
-        }
+        repository = Repository(this)
 
-        imageView = findViewById(R.id.imageView)
-        mangaTitleTop = findViewById(R.id.manga_title)
-        mangaTitleBottom = findViewById(R.id.textView7)
-        views = findViewById(R.id.views)
-        chaptersInfo = findViewById(R.id.chapters_info)
-        rating = findViewById(R.id.rating)
-        description = findViewById(R.id.description)
-        backButton = findViewById(R.id.back_button)
+        // Получаем объект Manga из Intent
+        val manga = intent.getParcelableExtra<Manga>("manga")
 
-        favourites_btn = findViewById(R.id.favourites_btn)
-        read_button = findViewById(R.id.read_button)
+        // Проверяем, что объект Manga не null
+        if (manga != null) {
+            // Находим View элементы в layout
+            val mangaImage: ImageView = findViewById(R.id.imageView)
+            val mangaTitle: TextView = findViewById(R.id.manga_title)
+            val views: TextView = findViewById(R.id.views)
+            val chaptersInfo: TextView = findViewById(R.id.chapters_info)
+            val rating: TextView = findViewById(R.id.rating)
+            val description: TextView = findViewById(R.id.description)
+            val typeTextView: TextView = findViewById(R.id.manga_type)
 
-        backButton.setOnClickListener{
-            onBackPressed()
-        }
+            // Заполняем View данными из объекта Manga
+            Glide.with(this)
+                .load(manga.images)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(mangaImage)
 
-        favourites_btn.setOnClickListener {
-            showModalDialog()
-        }
+            mangaTitle.text = manga.name
+            views.text = "Просмотров: ${manga.views ?: "N/A"}"
+            chaptersInfo.text = "Главы: ${manga.chapters ?: "N/A"}"
+            rating.text = manga.score?.toString() ?: "N/A"
+            description.text = manga.synopsis
 
-        read_button.setOnClickListener {
-            showModalDialog()
-        }
-    }
-    private fun showModalDialog() {
-        if (!modalDialog.isShowing) {
-            modalDialog.show()
+            // Получаем тип манги из базы данных
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val mangaType = intent.getParcelableExtra<MangaType>("manga_type")
 
-            val modalOverlay = modalDialog.window?.decorView
-            modalOverlay?.setOnClickListener {
-                if (modalDialog.isShowing) {
-                    modalDialog.dismiss()
+                    if (mangaType != null) {
+                        typeTextView.text = "Type: ${mangaType.type ?: "N/A"}"
+                    } else {
+                        typeTextView.text = "Type: N/A"
+                    }
+
+                } catch (e: Exception) {
+                    Log.e("DetailMangaActivity", "Error fetching MangaType: ${e.message}")
+                    withContext(Dispatchers.Main) {
+                        typeTextView.text = "Type: Error"
+                    }
                 }
             }
+
+        } else {
+            // Обрабатываем случай, когда объект Manga не был передан
+            // Например, можно вывести сообщение об ошибке или закрыть Activity
+            finish()
         }
     }
 }

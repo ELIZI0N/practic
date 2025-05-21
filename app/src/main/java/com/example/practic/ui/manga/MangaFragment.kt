@@ -1,6 +1,7 @@
 package com.example.practic.ui.manga
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.practic.DetailMangaActivity
 import com.example.practic.R
 import com.example.practic.adapter.AllAdapter
 import com.example.practic.data.Manga
@@ -25,6 +27,7 @@ class MangaFragment : Fragment() {
     private lateinit var modalDialog: Dialog
     private lateinit var repository: Repository
     private lateinit var allAdapter: AllAdapter
+    private var allMangaList: List<Manga> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +51,7 @@ class MangaFragment : Fragment() {
             setCancelable(true)
         }
 
-        setupRecyclerView()
+        setupAllRecyclerView()
         loadMangaData() // Load data when the view is created
 
         filterButton = binding.root.findViewById(R.id.filter_btn)
@@ -57,16 +60,27 @@ class MangaFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
-        binding.allRecycler.layoutManager = LinearLayoutManager(requireContext())
-        allAdapter = AllAdapter(emptyList()) // Initialize with an empty list
-        binding.allRecycler.adapter = allAdapter
+    private fun setupAllRecyclerView() {
+        allAdapter = AllAdapter(emptyList()) { manga ->  // Initialize with click listener
+            openDetailMangaActivity(manga)
+        }
+        binding.allRecycler.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = allAdapter
+        }
+    }
+
+    private fun openDetailMangaActivity(manga: Manga){
+        val intent = Intent(requireContext(), DetailMangaActivity::class.java)
+        intent.putExtra("manga", manga)
+        startActivity(intent)
     }
 
     private fun loadMangaData(sortBy: String? = null, sortOrder: String? = null) {
         CoroutineScope(Dispatchers.IO).launch {
             val mangaList = repository.getAllMangas(sortBy, sortOrder)
             withContext(Dispatchers.Main) {
+                allMangaList = mangaList
                 allAdapter.setData(mangaList)
             }
         }

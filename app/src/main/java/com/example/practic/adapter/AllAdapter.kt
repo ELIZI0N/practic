@@ -1,5 +1,6 @@
 package com.example.practic.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,10 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.practic.DetailMangaActivity
 import com.example.practic.R
 import com.example.practic.data.Manga
 
-class AllAdapter(private var mangaList: List<Manga>) : RecyclerView.Adapter<AllAdapter.MangaViewHolder>() {
+class AllAdapter(private var mangaList: List<Manga>, private val onItemClick: (Manga) -> Unit) : RecyclerView.Adapter<AllAdapter.MangaViewHolder>() {
 
     class MangaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mangaImage: ImageView = itemView.findViewById(R.id.manga_img_stolb)
@@ -29,21 +31,23 @@ class AllAdapter(private var mangaList: List<Manga>) : RecyclerView.Adapter<AllA
 
         holder.mangaTitle.text = currentItem.name
         holder.authorManga.text = currentItem.authors
-        holder.chapters.text = currentItem.chapters?.toString() ?: "N/A" // Handle null chapter count
+        holder.chapters.text = currentItem.chapters?.toString() ?: "N/A"
 
-        // Load image using Glide (or Picasso)
         Glide.with(holder.itemView.context)
-            .load(currentItem.images) // Assuming images is a URL or resource
-            .placeholder(R.drawable.ic_launcher_background) // Replace with your placeholder
-            .error(R.drawable.ic_launcher_foreground) // Replace with your error image
+            .load(currentItem.images)
+            .placeholder(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_launcher_foreground)
             .into(holder.mangaImage)
+
+        holder.itemView.setOnClickListener {
+            onItemClick(currentItem)
+        }
     }
 
     override fun getItemCount(): Int {
         return mangaList.size
     }
 
-    // Method to update the data in the adapter
     fun setData(newMangaList: List<Manga>) {
         mangaList = newMangaList
         notifyDataSetChanged()
