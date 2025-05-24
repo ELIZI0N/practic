@@ -33,7 +33,7 @@ class DetailMangaActivity : AppCompatActivity() {
         // Проверяем, что объект Manga не null
         if (manga != null) {
             // Находим View элементы в layout
-            val mangaImage: ImageView = findViewById(R.id.imageView)
+            val mangaImage: ImageView = findViewById(R.id.image_info)
             val mangaTitle: TextView = findViewById(R.id.manga_title)
             val views: TextView = findViewById(R.id.views)
             val chaptersInfo: TextView = findViewById(R.id.chapters_info)
@@ -47,6 +47,7 @@ class DetailMangaActivity : AppCompatActivity() {
                 .load(manga.images)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)
+                .centerCrop()
                 .into(mangaImage)
 
             mangaTitle.text = manga.name
@@ -55,25 +56,7 @@ class DetailMangaActivity : AppCompatActivity() {
             rating.text = manga.score?.toString() ?: "N/A"
             description.text = manga.synopsis
             mangaName.text = manga.name
-
-            // Получаем тип манги из базы данных
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val mangaType = intent.getParcelableExtra<MangaType>("manga_type")
-
-                    if (mangaType != null) {
-                        typeTextView.text = "Type: ${mangaType.type ?: "N/A"}"
-                    } else {
-                        typeTextView.text = "Type: N/A"
-                    }
-
-                } catch (e: Exception) {
-                    Log.e("DetailMangaActivity", "Error fetching MangaType: ${e.message}")
-                    withContext(Dispatchers.Main) {
-                        typeTextView.text = "Type: Error"
-                    }
-                }
-            }
+            typeTextView.text = manga.typeId.toString()
 
         } else {
             // Обрабатываем случай, когда объект Manga не был передан
