@@ -49,8 +49,8 @@ class HomeFragment : Fragment() {
         repository = Repository(requireContext())
 
         toggleButton1 = binding.toggleButton
-        toggleButton2 = binding.toggleButton2 //Исправлено на toggleButton_2
-        toggleButton3 = binding.toggleButton3 //Исправлено на toggleButton_3
+        toggleButton2 = binding.toggleButton2
+        toggleButton3 = binding.toggleButton3
 
         toggleButton1.isChecked = true
 
@@ -87,7 +87,7 @@ class HomeFragment : Fragment() {
         popularityAdapter = PopularityAdapter(emptyList(), onItemClick = { manga: Manga ->
             openDetailMangaActivity(manga)
         })
-        binding.trendingRecycler.apply { // Исправлено на trendingRecycler
+        binding.trendingRecycler.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = popularityAdapter
         }
@@ -137,7 +137,7 @@ class HomeFragment : Fragment() {
                 val topTrending = allManga.sortedBy { it.popularity ?: 0 }.take(8)
 
                 withContext(Dispatchers.Main) {
-                    popularityAdapter.setData(topTrending) // Использовать popularityAdapter
+                    popularityAdapter.setData(topTrending)
                 }
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Error fetching top manga: ${e.message}")

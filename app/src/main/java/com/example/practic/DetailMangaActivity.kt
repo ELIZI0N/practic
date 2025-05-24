@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.practic.data.Manga
-import com.example.practic.data.MangaType
 import com.example.practic.data_base.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +55,7 @@ class DetailMangaActivity : AppCompatActivity() {
             rating.text = manga.score?.toString() ?: "N/A"
             description.text = manga.synopsis
             mangaName.text = manga.name
-            typeTextView.text = manga.typeId.toString()
+            typeTextView.text = manga.type
 
         } else {
             // Обрабатываем случай, когда объект Manga не был передан

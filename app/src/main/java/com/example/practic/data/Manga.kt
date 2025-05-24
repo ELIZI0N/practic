@@ -7,13 +7,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Manga",
-    foreignKeys = [ForeignKey(
-        entity = MangaType::class,
-        parentColumns = ["ID"],
-        childColumns = ["Type_ID"],
-        onDelete = ForeignKey.CASCADE
-    )])
+@Entity(tableName = "Manga")
 data class Manga(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "ID")
@@ -46,8 +40,8 @@ data class Manga(
     @ColumnInfo(name = "Popularity")
     val popularity: Int?,
 
-    @ColumnInfo(name = "Type_ID")
-    val typeId: Int
+    @ColumnInfo(name = "Type")
+    val type: String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         id = parcel.readInt(),
@@ -56,11 +50,11 @@ data class Manga(
         authors = parcel.readString() ?: "",
         release = parcel.readInt(),
         views = parcel.readString(),
-        chapters = parcel.readInt(),
-        score = parcel.readDouble(),
+        chapters = parcel.readValue(Int::class.java.classLoader) as? Int,
+        score = parcel.readValue(Double::class.java.classLoader) as? Double,
         synopsis = parcel.readString() ?: "",
-        popularity = parcel.readInt(),
-        typeId = parcel.readInt()
+        popularity = parcel.readValue(Int::class.java.classLoader) as? Int,
+        type = parcel.readString() ?: ""
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -70,11 +64,11 @@ data class Manga(
         parcel.writeString(authors)
         parcel.writeInt(release)
         parcel.writeString(views)
-        chapters?.let { parcel.writeInt(it) }
-        score?.let { parcel.writeDouble(it) }
+        parcel.writeValue(chapters)
+        parcel.writeValue(score)
         parcel.writeString(synopsis)
-        parcel.writeInt(popularity ?: 0)
-        parcel.writeInt(typeId)
+        parcel.writeValue(popularity)
+        parcel.writeString(type)
     }
 
     override fun describeContents(): Int {
@@ -91,3 +85,4 @@ data class Manga(
         }
     }
 }
+

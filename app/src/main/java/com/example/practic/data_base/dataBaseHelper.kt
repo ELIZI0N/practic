@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.practic.data.Manga
-import com.example.practic.data.MangaType
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -32,11 +31,6 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
         const val COLUMN_SCORE = "Score"
         const val COLUMN_SYNOPSIS = "Synopsis"
         const val COLUMN_POPULARITY = "Popularity"
-        const val COLUMN_TYPE_ID = "Type_ID"
-
-        // Manga_Type table
-        const val TABLE_MANGA_TYPE = "Manga_Type"
-        const val COLUMN_TYPE_ID_TYPE = "ID"
         const val COLUMN_TYPE = "Type"
     }
 
@@ -74,16 +68,11 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        // This method is called only if the database file doesn't exist.
-        //  You don't need to create the tables here if you copy an existing database
-        //  Instead, leave it empty
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        //  If you need to upgrade the database schema, implement this method.
-        //  However, be CAREFUL - this will delete all the data!
-        //  If you are copying an existing database, you can also leave this empty.
-        //  (But you might need to handle upgrades differently in a real application.)
+
     }
 
     fun getAllMangas(sortBy: String?, sortOrder: String?): List<Manga> {
@@ -113,7 +102,7 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
                     score = it.getDouble(it.getColumnIndexOrThrow(COLUMN_SCORE)),
                     synopsis = it.getString(it.getColumnIndexOrThrow(COLUMN_SYNOPSIS)),
                     popularity = it.getInt(it.getColumnIndexOrThrow(COLUMN_POPULARITY)),
-                    typeId = it.getInt(it.getColumnIndexOrThrow(COLUMN_TYPE_ID))
+                    type = it.getString(it.getColumnIndexOrThrow(COLUMN_TYPE))
                 )
                 mangaList.add(manga)
             }
@@ -147,7 +136,7 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
                     score = it.getDouble(it.getColumnIndexOrThrow(COLUMN_SCORE)),
                     synopsis = it.getString(it.getColumnIndexOrThrow(COLUMN_SYNOPSIS)),
                     popularity = it.getInt(it.getColumnIndexOrThrow(COLUMN_POPULARITY)),
-                    typeId = it.getInt(it.getColumnIndexOrThrow(COLUMN_TYPE_ID))
+                    type = it.getString(it.getColumnIndexOrThrow(COLUMN_TYPE))
                 )
             }
         }
@@ -167,7 +156,7 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             put(COLUMN_SCORE, manga.score)
             put(COLUMN_SYNOPSIS, manga.synopsis)
             put(COLUMN_POPULARITY, manga.popularity)
-            put(COLUMN_TYPE_ID, manga.typeId)
+            put(COLUMN_TYPE, manga.type)
         }
         return db.update(TABLE_MANGA, values, "$COLUMN_ID = ?", arrayOf(manga.id.toString()))
     }
@@ -175,54 +164,5 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
     fun deleteManga(id: Int): Int {
         val db = writableDatabase
         return db.delete(TABLE_MANGA, "$COLUMN_ID = ?", arrayOf(id.toString()))
-    }
-
-    // MangaType operations (internal use)
-    fun getAllMangaTypes(): List<MangaType> {
-        val typeList = mutableListOf<MangaType>()
-        val db = readableDatabase
-        val cursor = db.query(TABLE_MANGA_TYPE, null, null, null, null, null, null)
-
-        cursor.use {
-            while (it.moveToNext()) {
-                val mangaType = MangaType(
-                    id = it.getInt(it.getColumnIndexOrThrow(COLUMN_TYPE_ID_TYPE)),
-                    type = it.getString(it.getColumnIndexOrThrow(COLUMN_TYPE))
-                )
-                typeList.add(mangaType)
-            }
-        }
-        return typeList
-    }
-
-    fun getMangaTypeById(id: Int): MangaType? {
-        val db = readableDatabase
-        val cursor = db.query(
-            TABLE_MANGA_TYPE,
-            null,
-            "$COLUMN_TYPE_ID_TYPE = ?",
-            arrayOf(id.toString()),
-            null,
-            null,
-            null
-        )
-
-        cursor.use {
-            if (it.moveToFirst()) {
-                return MangaType(
-                    id = it.getInt(it.getColumnIndexOrThrow(COLUMN_TYPE_ID_TYPE)),
-                    type = it.getString(it.getColumnIndexOrThrow(COLUMN_TYPE))
-                )
-            }
-        }
-        return null
-    }
-
-    fun insertMangaType(mangaType: MangaType): Long {
-        val db = writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_TYPE, mangaType.type)
-        }
-        return db.insert(TABLE_MANGA_TYPE, null, values)
     }
 }
