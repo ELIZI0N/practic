@@ -16,8 +16,13 @@
         tools:layout="@layout/fragment_manga" />
 
     <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.example.practic.ui.search.SearchFragment"
-        tools:layout="@layout/fragment_search" />
+        android:id="@+id/navigation_menu"
+        android:name="com.example.practic.ui.menu.MenuFragment"
+        tools:layout="@layout/fragment_menu" />
+
+    <fragment
+        android:id="@+id/navigation_edit_selection"
+        android:name="com.example.practic.ui.edit.EditSelectFragment"
+        tools:layout="@layout/fragment_edit_select" />
 
 </navigation>

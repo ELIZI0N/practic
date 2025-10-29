@@ -4,4 +4,10 @@
     <string name="title_manga">Manga</string>
     <string name="title_search">Search</string>
     <string name="title_accaunt">Accaunt</string>
+
+    <string-array name="manga_types">
+        <item>Манга</item>
+        <item>Маньхуа</item>
+        <item>Манхва</item>
+    </string-array>
 </resources>

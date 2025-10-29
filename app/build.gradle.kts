@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,4 +62,9 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.google.code.gson:gson:2.10.1")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
+
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
 }

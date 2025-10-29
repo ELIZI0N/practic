@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:focusableInTouchMode="true"
     tools:context=".ui.home.HomeFragment">
 
     <LinearLayout
@@ -72,27 +73,24 @@
             android:backgroundTint="#00FFFFFF"
             android:src="@drawable/search_button" />
 
-        <Button
+        <EditText
             android:id="@+id/width_search_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:fontFamily="@font/poppins_400"
-            android:gravity="start|center_vertical"
-            android:text="Найти мангу..."
-            android:textAllCaps="false"
-            android:textColor="#B8B8D2"
-            android:textSize="14sp" />
-
-        <ImageButton
-            android:id="@+id/filtr_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:backgroundTint="#00FFFFFF"
-            android:src="@drawable/filtr_button" />
+            android:gravity="center_vertical"
+            android:hint="Найти мангу..."
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:text=""
+            android:textColor="#1F1F39"
+            android:textColorHint="#B8B8D2"
+            android:textSize="14sp"
+            android:imeOptions="actionSearch"
+            android:singleLine="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -115,19 +113,6 @@
             android:textColor="#333333"
             android:textSize="14sp"
             app:lineHeight="16.94dp" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <ImageButton
-            android:id="@+id/more_button"
-            android:layout_width="17.52dp"
-            android:layout_height="17.52dp"
-            android:layout_marginEnd="4dp"
-            android:backgroundTint="#00FFFFFF"
-            android:src="@drawable/ellipsis" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

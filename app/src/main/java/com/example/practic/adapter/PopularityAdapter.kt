@@ -12,7 +12,7 @@ import com.example.practic.data.Manga
 
 class PopularityAdapter(
     private var mangaList: List<Manga>,
-    private val onItemClick: (Manga) -> Unit
+    val onItemClick: (Manga) -> Unit
 ) : RecyclerView.Adapter<PopularityAdapter.MangaViewHolder>() {
 
     class MangaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

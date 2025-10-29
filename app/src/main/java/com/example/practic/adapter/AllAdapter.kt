@@ -12,7 +12,7 @@ import com.example.practic.DetailMangaActivity
 import com.example.practic.R
 import com.example.practic.data.Manga
 
-class AllAdapter(private var mangaList: List<Manga>, private val onItemClick: (Manga) -> Unit) : RecyclerView.Adapter<AllAdapter.MangaViewHolder>() {
+class AllAdapter(private var mangaList: List<Manga>, val onItemClick: (Manga) -> Unit) : RecyclerView.Adapter<AllAdapter.MangaViewHolder>() {
 
     class MangaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mangaImage: ImageView = itemView.findViewById(R.id.manga_img_stolb)

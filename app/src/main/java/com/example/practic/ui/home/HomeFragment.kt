@@ -2,12 +2,16 @@ package com.example.practic.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
 import android.widget.ToggleButton
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practic.DetailMangaActivity
@@ -33,6 +37,9 @@ class HomeFragment : Fragment() {
     private lateinit var repository: Repository
 
     private var allMangaList: List<Manga> = emptyList()
+    private var filteredMangaList: List<Manga> = emptyList()
+    private var isSearching = false
+    private var currentSearchQuery = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +47,11 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        binding.root.setOnClickListener {
+            hideKeyboard()
+        }
+
         return binding.root
     }
 
@@ -55,12 +67,53 @@ class HomeFragment : Fragment() {
         toggleButton1.isChecked = true
 
         setupToggleButtons()
+        setupSearchFunctionality()
 
         setupPopularityRecyclerView()
         setupAllRecyclerView()
 
         fetchTopManga()
         fetchAllManga()
+    }
+
+    private fun setupSearchFunctionality() {
+        binding.searchButton.setOnClickListener {
+            binding.widthSearchButton.requestFocus()
+            showKeyboard()
+        }
+
+        binding.widthSearchButton.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                currentSearchQuery = s?.toString()?.trim() ?: ""
+                if (currentSearchQuery.isNotEmpty()) {
+                    isSearching = true
+                    filterManga(currentSearchQuery)
+                } else {
+                    isSearching = false
+                    updateAllRecyclerViewData()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        binding.widthSearchButton.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                hideKeyboard()
+            }
+        }
+    }
+
+    private fun filterManga(query: String) {
+        val filteredList = allMangaList.filter { manga ->
+            manga.name.contains(query, ignoreCase = true) ||
+                    manga.authors.contains(query, ignoreCase = true) ||
+                    manga.type.contains(query, ignoreCase = true)
+        }
+        filteredMangaList = filteredList
+        displayAllManga(filteredList)
     }
 
     private fun setupToggleButtons() {
@@ -110,17 +163,21 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateAllRecyclerViewData() {
-        when {
-            binding.toggleButton.isChecked -> {
-                displayAllManga(allMangaList.take(8))
-            }
-            binding.toggleButton2.isChecked -> {
-                val sortedList = allMangaList.sortedByDescending { it.chapters ?: 0 }
-                displayAllManga(sortedList.take(8))
-            }
-            binding.toggleButton3.isChecked -> {
-                val sortedList = allMangaList.sortedByDescending { it.release }
-                displayAllManga(sortedList.take(8))
+        if (isSearching) {
+            displayAllManga(filteredMangaList)
+        } else {
+            when {
+                binding.toggleButton.isChecked -> {
+                    displayAllManga(allMangaList.take(8))
+                }
+                binding.toggleButton2.isChecked -> {
+                    val sortedList = allMangaList.sortedByDescending { it.chapters ?: 0 }
+                    displayAllManga(sortedList.take(8))
+                }
+                binding.toggleButton3.isChecked -> {
+                    val sortedList = allMangaList.sortedByDescending { it.release }
+                    displayAllManga(sortedList.take(8))
+                }
             }
         }
     }
@@ -155,6 +212,27 @@ class HomeFragment : Fragment() {
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Error fetching all manga: ${e.message}")
             }
+        }
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)
+        inputMethodManager?.hideSoftInputFromWindow(binding.widthSearchButton.windowToken, 0)
+        binding.widthSearchButton.clearFocus()
+    }
+
+    private fun showKeyboard() {
+        val inputMethodManager = ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)
+        inputMethodManager?.showSoftInput(binding.widthSearchButton, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchTopManga()
+        fetchAllManga()
+
+        if (currentSearchQuery.isNotEmpty()) {
+            binding.widthSearchButton.setText(currentSearchQuery)
         }
     }
 }

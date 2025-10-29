@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -17,10 +20,20 @@
 
         <activity
             android:name=".DetailMangaActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".ChangeMangaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".AddMangaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

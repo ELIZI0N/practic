@@ -1,4 +1,4 @@
-package com.example.practic.ui.search
+package com.example.practic.ui.menu
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,19 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.practic.R
-import android.widget.TextView
 
-class SearchFragment : Fragment() {
+class MenuFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
-
-        val textView: TextView = view.findViewById(R.id.textView4)
-
-        return view
+        return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 }

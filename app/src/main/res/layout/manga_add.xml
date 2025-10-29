@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:text="Добавить новое произведение"
+            android:textColor="#1F1F39"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/back_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="100dp"
+                android:background="@android:color/transparent"
+                android:elevation="8dp"
+                android:src="@drawable/back_btn" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="200dp"
+                android:layout_height="300dp"
+                android:background="@drawable/search_background"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_foreground" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="100dp"
+                android:background="@android:color/transparent"
+                android:elevation="8dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSelectImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Выбрать изображение"
+            android:textAllCaps="false"
+            android:background="@drawable/search_background"
+            android:textColor="#1F1F39"
+            android:layout_marginBottom="30dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintTextColor="#B8B8D2"
+            app:boxStrokeColor="#B8B8D2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_background"
+                android:hint="Название произведения *"
+                android:maxLines="1"
+                android:inputType="textCapSentences|textAutoCorrect"
+                android:textColor="#1F1F39"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Тип произведения *"
+            android:textColor="#B8B8D2"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/spinnerType"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/search_background"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintTextColor="#B8B8D2"
+            app:boxStrokeColor="#B8B8D2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Автор/авторы *"
+                android:background="@drawable/search_background"
+                android:textColor="#1F1F39"
+                android:textSize="16sp"
+                android:maxLines="2"
+                android:inputType="textCapWords|textAutoCorrect" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintTextColor="#B8B8D2"
+            app:boxStrokeColor="#B8B8D2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etReleaseYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_background"
+                android:hint="Год релиза *"
+                android:inputType="number"
+                android:textColor="#1F1F39"
+                android:textSize="16sp"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintTextColor="#B8B8D2"
+            app:boxStrokeColor="#B8B8D2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etChapters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_background"
+                android:hint="Количество глав *"
+                android:inputType="number"
+                android:textColor="#1F1F39"
+                android:textSize="16sp"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            app:hintTextColor="#B8B8D2"
+            app:boxStrokeColor="#B8B8D2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescription"
+                android:layout_width="match_parent"
+                android:background="@drawable/search_background"
+                android:layout_height="120dp"
+                android:hint="Описание произведения *"
+                android:gravity="top"
+                android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
+                android:textColor="#1F1F39"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnAddManga"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Добавить мангу"
+            android:textAllCaps="false"
+            android:background="@drawable/read_button"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="* - обязательные поля"
+            android:textColor="#858597"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,4 +1,3 @@
-
 package com.example.practic.data_base
 
 import android.content.ContentValues
@@ -15,9 +14,9 @@ import java.io.InputStream
 class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_NAME = "Manga_DB.db" //Имя файла БД
+        private const val DATABASE_NAME = "Manga_DB.db"
         private const val DATABASE_VERSION = 1
-        private const val TAG = "DataBaseHelper"  // Тег для логов
+        private const val TAG = "DataBaseHelper"
 
         // Manga table
         const val TABLE_MANGA = "Manga"
@@ -35,22 +34,21 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
     }
 
     init {
-        // Call method to copy database on initialization
         copyDataBase()
     }
 
     private fun copyDataBase() {
-        val dbFile = context.getDatabasePath(DATABASE_NAME) // Полный путь к БД приложения
+        val dbFile = context.getDatabasePath(DATABASE_NAME)
 
-        if (!dbFile.exists()) { //Если не существует, то копируем
+        if (!dbFile.exists()) {
             try {
-                dbFile.parentFile?.mkdirs() // Создаем директорию databases, если она не существует
-                val inputStream: InputStream = context.assets.open(DATABASE_NAME) // Открываем поток к файлу в assets
-                val outputStream = FileOutputStream(dbFile) // Открываем поток для записи в файл БД приложения
+                dbFile.parentFile?.mkdirs()
+                val inputStream: InputStream = context.assets.open(DATABASE_NAME)
+                val outputStream = FileOutputStream(dbFile)
 
                 val buffer = ByteArray(1024)
                 var length: Int
-                while (inputStream.read(buffer).also { length = it } > 0) { //Побайтово читаем и пишем
+                while (inputStream.read(buffer).also { length = it } > 0) {
                     outputStream.write(buffer, 0, length)
                 }
 
@@ -60,7 +58,7 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
                 Log.i(TAG, "Database copied successfully")
             } catch (e: IOException) {
                 Log.e(TAG, "Error copying database", e)
-                throw Error("Error copying database") // Выбрасываем исключение, чтобы приложение не продолжало работу с пустой БД
+                throw Error("Error copying database")
             }
         } else {
             Log.i(TAG, "Database already exists")
@@ -68,23 +66,34 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-
     }
 
-    fun getAllMangas(sortBy: String?, sortOrder: String?): List<Manga> {
+    fun getAllMangas(): List<Manga> {
+        return getAllMangasSorted(null, null)
+    }
+
+    fun getAllMangasSorted(sortBy: String?, sortOrder: String?): List<Manga> {
         val mangaList = mutableListOf<Manga>()
         val db = readableDatabase
 
-        // Construct the ORDER BY clause dynamically
-        val orderByClause = if (sortBy != null && sortBy.isNotEmpty()) {
-            val sortDirection = if (sortOrder != null && sortOrder.equals("DESC", ignoreCase = true)) "DESC" else "ASC"
-            "ORDER BY $sortBy $sortDirection"
-        } else {
-            null // No sorting specified
+        val orderByClause = when {
+            sortBy != null && sortOrder != null -> {
+                val validSortBy = when (sortBy) {
+                    "ID" -> COLUMN_ID
+                    "Release" -> COLUMN_RELEASE
+                    "Views" -> COLUMN_VIEWS
+                    "Chapters" -> COLUMN_CHAPTERS
+                    "Score" -> COLUMN_SCORE
+                    "Popularity" -> COLUMN_POPULARITY
+                    else -> COLUMN_ID // По умолчанию сортируем по ID
+                }
+                val validSortOrder = if (sortOrder.equals("DESC", ignoreCase = true)) "DESC" else "ASC"
+                "$validSortBy $validSortOrder"
+            }
+            else -> null
         }
 
         val cursor = db.query(TABLE_MANGA, null, null, null, null, null, orderByClause)
@@ -164,5 +173,22 @@ class dataBaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
     fun deleteManga(id: Int): Int {
         val db = writableDatabase
         return db.delete(TABLE_MANGA, "$COLUMN_ID = ?", arrayOf(id.toString()))
+    }
+
+    fun addManga(manga: Manga): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_NAME, manga.name)
+            put(COLUMN_IMAGES, manga.images)
+            put(COLUMN_AUTHORS, manga.authors)
+            put(COLUMN_RELEASE, manga.release)
+            put(COLUMN_VIEWS, manga.views)
+            put(COLUMN_CHAPTERS, manga.chapters)
+            put(COLUMN_SCORE, manga.score)
+            put(COLUMN_SYNOPSIS, manga.synopsis)
+            put(COLUMN_POPULARITY, manga.popularity)
+            put(COLUMN_TYPE, manga.type)
+        }
+        return db.insert(TABLE_MANGA, null, values)
     }
 }

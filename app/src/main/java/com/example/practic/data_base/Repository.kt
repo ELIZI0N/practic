@@ -8,8 +8,14 @@ import kotlinx.coroutines.withContext
 class Repository(context: Context) {
     private val dbHelper = dataBaseHelper(context)
 
-    suspend fun getAllMangas(sortBy: String?, sortOrder: String?): List<Manga> = withContext(Dispatchers.IO) {
-        dbHelper.getAllMangas(sortBy, sortOrder)
+    suspend fun getAllMangas(sortBy: String? = null, sortOrder: String? = null): List<Manga> {
+        return withContext(Dispatchers.IO) {
+            if (sortBy != null && sortOrder != null) {
+                dbHelper.getAllMangasSorted(sortBy, sortOrder)
+            } else {
+                dbHelper.getAllMangas()
+            }
+        }
     }
 
     suspend fun getMangaById(id: Int): Manga? = withContext(Dispatchers.IO) {
@@ -22,5 +28,9 @@ class Repository(context: Context) {
 
     suspend fun deleteManga(id: Int): Int = withContext(Dispatchers.IO) {
         dbHelper.deleteManga(id)
+    }
+
+    suspend fun addManga(manga: Manga): Long = withContext(Dispatchers.IO) {
+        dbHelper.addManga(manga)
     }
 }

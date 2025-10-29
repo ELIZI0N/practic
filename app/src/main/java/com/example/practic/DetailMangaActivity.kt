@@ -1,7 +1,6 @@
 package com.example.practic
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,10 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.practic.data.Manga
 import com.example.practic.data_base.Repository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class DetailMangaActivity : AppCompatActivity() {
 
@@ -26,12 +21,9 @@ class DetailMangaActivity : AppCompatActivity() {
 
         repository = Repository(this)
 
-        // Получаем объект Manga из Intent
         val manga = intent.getParcelableExtra<Manga>("manga")
 
-        // Проверяем, что объект Manga не null
         if (manga != null) {
-            // Находим View элементы в layout
             val mangaImage: ImageView = findViewById(R.id.image_info)
             val mangaTitle: TextView = findViewById(R.id.manga_title)
             val views: TextView = findViewById(R.id.views)
@@ -41,7 +33,6 @@ class DetailMangaActivity : AppCompatActivity() {
             val typeTextView: TextView = findViewById(R.id.manga_type)
             val mangaName: TextView = findViewById(R.id.textView7)
 
-            // Заполняем View данными из объекта Manga
             Glide.with(this)
                 .load(manga.images)
                 .placeholder(R.drawable.ic_launcher_background)
@@ -58,8 +49,6 @@ class DetailMangaActivity : AppCompatActivity() {
             typeTextView.text = manga.type
 
         } else {
-            // Обрабатываем случай, когда объект Manga не был передан
-            // Например, можно вывести сообщение об ошибке или закрыть Activity
             finish()
         }
 

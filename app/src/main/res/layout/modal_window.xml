@@ -1,32 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#80000000"> <!-- Полупрозрачный фон -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="20dp"
+    android:layout_marginTop="80dp"
+    android:background="@drawable/modal_background"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:text="Сортировка"
+        android:textColor="#1F1F39"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Данная функция находится в разработке, отдел разработчиков приносит свои извинения"
-            android:textAlignment="center"
-            android:textSize="18sp" />
+    <Button
+        android:id="@+id/sortById"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/sort_button_background"
+        android:text="По дате добавления (новые → старые)"
+        android:textAllCaps="false"
+        android:textColor="#1F1F39"
+        android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Для закрытия данного окна нажмите на экран"
-            android:textAlignment="center" />
+    <Button
+        android:id="@+id/sortByRelease"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/sort_button_background"
+        android:text="По дате релиза (новые → старые)"
+        android:textAllCaps="false"
+        android:textColor="#1F1F39"
+        android:textSize="14sp" />
 
-    </LinearLayout>
+    <Button
+        android:id="@+id/sortByViews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/sort_button_background"
+        android:text="По просмотрам (больше → меньше)"
+        android:textAllCaps="false"
+        android:textColor="#1F1F39"
+        android:textSize="14sp" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/sortByChapters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/sort_button_background"
+        android:text="По количеству глав (больше → меньше)"
+        android:textAllCaps="false"
+        android:textColor="#1F1F39"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/sortByScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/sort_button_background"
+        android:text="По рейтингу (высокий → низкий)"
+        android:textAllCaps="false"
+        android:textColor="#1F1F39"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/sortByPopularity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sort_button_background"
+        android:text="По популярности (высокая → низкая)"
+        android:textAllCaps="false"
+        android:textColor="#1F1F39"
+        android:textSize="14sp" />
+
+</LinearLayout>
