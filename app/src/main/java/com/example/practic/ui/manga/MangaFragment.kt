@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,7 @@ class MangaFragment : Fragment() {
     private lateinit var modalDialog: Dialog
     private lateinit var repository: Repository
     private lateinit var allAdapter: AllAdapter
+    private lateinit var activeFilterTextView: TextView
     private var allMangaList: List<Manga> = emptyList()
 
     private var currentSortBy: String? = null
@@ -49,6 +51,7 @@ class MangaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         repository = Repository(requireContext())
+        activeFilterTextView = binding.root.findViewById(R.id.active_filter)
 
         modalDialog = Dialog(requireContext()).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -96,8 +99,22 @@ class MangaFragment : Fragment() {
                 currentSortBy = sortBy
                 currentSortOrder = sortOrder
                 isViewsSortActive = false
+                updateActiveFilterText()
             }
         }
+    }
+
+    private fun updateActiveFilterText() {
+        val filterText = when {
+            isViewsSortActive -> "По просмотрам ↓"
+            currentSortBy == "ID" && currentSortOrder == "DESC" -> "По Дате добавления ↓"
+            currentSortBy == "Release" && currentSortOrder == "DESC" -> "По году выхода ↓"
+            currentSortBy == "Chapters" && currentSortOrder == "DESC" -> "По главам ↓"
+            currentSortBy == "Score" && currentSortOrder == "DESC" -> "По рейтингу ↓"
+            currentSortBy == "Popularity" && currentSortOrder == "ASC" -> "По популярности ↓"
+            else -> "Вся манга"
+        }
+        activeFilterTextView.text = filterText
     }
 
     private fun showModalDialog() {
@@ -116,42 +133,69 @@ class MangaFragment : Fragment() {
             highlightActiveSortButton(sortById, sortByRelease, sortByViews, sortByChapters, sortByScore, sortByPopularity)
 
             sortById.setOnClickListener {
-                loadMangaData("ID", "DESC")
+                if (currentSortBy == "ID" && currentSortOrder == "DESC") {
+                    // Если фильтр уже активен - сбрасываем
+                    resetFilters()
+                } else {
+                    // Если фильтр не активен - применяем
+                    loadMangaData("ID", "DESC")
+                }
                 modalDialog.dismiss()
             }
 
             sortByRelease.setOnClickListener {
-                loadMangaData("Release", "DESC")
+                if (currentSortBy == "Release" && currentSortOrder == "DESC") {
+                    resetFilters()
+                } else {
+                    loadMangaData("Release", "DESC")
+                }
                 modalDialog.dismiss()
             }
 
             sortByViews.setOnClickListener {
-                sortByViewsDescending()
+                if (isViewsSortActive) {
+                    resetFilters()
+                } else {
+                    sortByViewsDescending()
+                }
                 modalDialog.dismiss()
             }
 
             sortByChapters.setOnClickListener {
-                loadMangaData("Chapters", "DESC")
+                if (currentSortBy == "Chapters" && currentSortOrder == "DESC") {
+                    resetFilters()
+                } else {
+                    loadMangaData("Chapters", "DESC")
+                }
                 modalDialog.dismiss()
             }
 
             sortByScore.setOnClickListener {
-                loadMangaData("Score", "DESC")
+                if (currentSortBy == "Score" && currentSortOrder == "DESC") {
+                    resetFilters()
+                } else {
+                    loadMangaData("Score", "DESC")
+                }
                 modalDialog.dismiss()
             }
 
             sortByPopularity.setOnClickListener {
-                loadMangaData("Popularity", "ASC")
+                if (currentSortBy == "Popularity" && currentSortOrder == "ASC") {
+                    resetFilters()
+                } else {
+                    loadMangaData("Popularity", "ASC")
+                }
                 modalDialog.dismiss()
             }
-
-            val modalOverlay = modalDialog.window?.decorView
-            modalOverlay?.setOnClickListener {
-                if (modalDialog.isShowing) {
-                    modalDialog.dismiss()
-                }
-            }
         }
+    }
+
+    private fun resetFilters() {
+        currentSortBy = null
+        currentSortOrder = null
+        isViewsSortActive = false
+
+        loadMangaData()
     }
 
     private fun resetAllSortButtons(vararg buttons: Button) {
@@ -169,6 +213,7 @@ class MangaFragment : Fragment() {
         sortByScore: Button,
         sortByPopularity: Button
     ) {
+
         when {
             isViewsSortActive -> {
                 sortByViews.background = ContextCompat.getDrawable(requireContext(), R.drawable.active_sort_button_background)
@@ -213,6 +258,7 @@ class MangaFragment : Fragment() {
                     isViewsSortActive = true
                     currentSortBy = null
                     currentSortOrder = null
+                    updateActiveFilterText()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {

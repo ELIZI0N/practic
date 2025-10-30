@@ -17,69 +17,113 @@
         android:textStyle="bold"
         android:layout_marginBottom="12dp" />
 
-    <Button
-        android:id="@+id/sortById"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/sort_button_background"
-        android:text="По дате добавления (новые → старые)"
-        android:textAllCaps="false"
-        android:textColor="#1F1F39"
-        android:textSize="14sp" />
+        android:background="@drawable/active_sort_button"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/sortByRelease"
-        android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sortById"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="По дате добавления (новые → старые)"
+            android:textAllCaps="false"
+            android:textColor="#1F1F39"
+            android:background="@android:color/transparent"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/sort_button_background"
-        android:text="По дате релиза (новые → старые)"
-        android:textAllCaps="false"
-        android:textColor="#1F1F39"
-        android:textSize="14sp" />
+        android:background="@drawable/active_sort_button"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/sortByViews"
-        android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sortByRelease"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="По дате релиза (новые → старые)"
+            android:textAllCaps="false"
+            android:textColor="#1F1F39"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/sort_button_background"
-        android:text="По просмотрам (больше → меньше)"
-        android:textAllCaps="false"
-        android:textColor="#1F1F39"
-        android:textSize="14sp" />
+        android:background="@drawable/active_sort_button"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/sortByChapters"
-        android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sortByViews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="По просмотрам (больше → меньше)"
+            android:textAllCaps="false"
+            android:textColor="#1F1F39"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/sort_button_background"
-        android:text="По количеству глав (больше → меньше)"
-        android:textAllCaps="false"
-        android:textColor="#1F1F39"
-        android:textSize="14sp" />
+        android:background="@drawable/active_sort_button"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/sortByScore"
-        android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sortByChapters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="По количеству глав (больше → меньше)"
+            android:textAllCaps="false"
+            android:textColor="#1F1F39"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/sort_button_background"
-        android:text="По рейтингу (высокий → низкий)"
-        android:textAllCaps="false"
-        android:textColor="#1F1F39"
-        android:textSize="14sp" />
+        android:background="@drawable/active_sort_button"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/sortByPopularity"
-        android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sortByScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="По рейтингу (высокий → низкий)"
+            android:textAllCaps="false"
+            android:textColor="#1F1F39"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/sort_button_background"
-        android:text="По популярности (высокая → низкая)"
-        android:textAllCaps="false"
-        android:textColor="#1F1F39"
-        android:textSize="14sp" />
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/active_sort_button"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sortByPopularity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="По популярности (высокая → низкая)"
+            android:textAllCaps="false"
+            android:textColor="#1F1F39"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </LinearLayout>
