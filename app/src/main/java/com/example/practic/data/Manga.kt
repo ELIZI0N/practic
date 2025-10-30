@@ -1,10 +1,9 @@
 package com.example.practic.data
 
-import android.os.Parcel
 import android.os.Parcelable
+import android.os.Parcel
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "Manga")
@@ -41,20 +40,28 @@ data class Manga(
     val popularity: Int?,
 
     @ColumnInfo(name = "Type")
-    val type: String
+    val type: String,
+
+    /*@ColumnInfo(name = "comments", defaultValue = "0")
+    val comments: Long = 0L,*/
+
+    /*@ColumnInfo(name = "status", defaultValue = "'active'")
+    val status: String = "active"*/
+
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        id = parcel.readInt(),
-        name = parcel.readString() ?: "",
-        images = parcel.readString() ?: "",
-        authors = parcel.readString() ?: "",
-        release = parcel.readInt(),
-        views = parcel.readString(),
-        chapters = parcel.readValue(Int::class.java.classLoader) as? Int,
-        score = parcel.readValue(Double::class.java.classLoader) as? Double,
-        synopsis = parcel.readString() ?: "",
-        popularity = parcel.readValue(Int::class.java.classLoader) as? Int,
-        type = parcel.readString() ?: ""
+        parcel.readInt(),
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readString() ?: "",
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString() ?: "",
+        //parcel.readLong()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -69,6 +76,7 @@ data class Manga(
         parcel.writeString(synopsis)
         parcel.writeValue(popularity)
         parcel.writeString(type)
+        //parcel.writeLong(comments)
     }
 
     override fun describeContents(): Int {
@@ -85,4 +93,3 @@ data class Manga(
         }
     }
 }
-

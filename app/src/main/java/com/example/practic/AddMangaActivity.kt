@@ -205,7 +205,7 @@ class AddMangaActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val allMangas = repository.getAllMangas(null, null)
+                val allMangas = repository.getAllMangasAsList()
                 val maxPopularity = allMangas.maxByOrNull { it.popularity ?: 0 }?.popularity ?: 0
                 val newPopularity = maxPopularity + 1
 
@@ -222,19 +222,24 @@ class AddMangaActivity : AppCompatActivity() {
                     type = type
                 )
 
-                val result = repository.addManga(manga)
-                withContext(Dispatchers.Main) {
-                    if (result != -1L) {
+                try {
+                    repository.addManga(manga)
+                    withContext(Dispatchers.Main) {
                         Toast.makeText(this@AddMangaActivity, "Манга успешно добавлена!", Toast.LENGTH_SHORT).show()
+                        // Очистка формы после успешного добавления
+                        clearForm()
 
+                        // Возврат на главный экран
                         val intent = Intent(this@AddMangaActivity, MainActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                             putExtra("SELECT_TAB", "home")
                         }
                         startActivity(intent)
                         finish()
-                    } else {
-                        Toast.makeText(this@AddMangaActivity, "Ошибка при добавлении манги", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@AddMangaActivity, "Ошибка при добавлении манги: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
@@ -251,6 +256,7 @@ class AddMangaActivity : AppCompatActivity() {
         etReleaseYear.text?.clear()
         etChapters.text?.clear()
         etDescription.text?.clear()
+        spinnerType.setSelection(0)
         imagePreview.setImageResource(android.R.color.transparent)
         selectedImageUri = null
         selectedImagePath = null

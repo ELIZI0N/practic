@@ -189,9 +189,7 @@ class HomeFragment : Fragment() {
     private fun fetchTopManga() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val allManga = repository.getAllMangas(sortBy = null, sortOrder = null)
-
-                val topTrending = allManga.sortedBy { it.popularity ?: 0 }.take(8)
+                val topTrending = repository.getTopManga(8)
 
                 withContext(Dispatchers.Main) {
                     popularityAdapter.setData(topTrending)
@@ -205,8 +203,9 @@ class HomeFragment : Fragment() {
     private fun fetchAllManga() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                allMangaList = repository.getAllMangas(sortBy = null, sortOrder = null)
+                val allManga = repository.getAllMangasSorted(null, null)
                 withContext(Dispatchers.Main) {
+                    allMangaList = allManga
                     updateAllRecyclerViewData()
                 }
             } catch (e: Exception) {

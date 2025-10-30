@@ -66,7 +66,7 @@ class EditSelectFragment : Fragment() {
     private fun loadMangaData() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val allManga = repository.getAllMangas(sortBy = null, sortOrder = null)
+                val allManga = repository.getAllMangasAsList()
 
                 withContext(Dispatchers.Main) {
                     displayManga(allManga)

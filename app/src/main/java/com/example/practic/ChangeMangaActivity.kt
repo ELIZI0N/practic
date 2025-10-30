@@ -276,20 +276,20 @@ class ChangeMangaActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val result = repository.updateManga(updatedManga)
+                    repository.updateManga(updatedManga)
                     withContext(Dispatchers.Main) {
-                        if (result > 0) {
-                            Toast.makeText(this@ChangeMangaActivity, "Манга успешно обновлена!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ChangeMangaActivity, "Манга успешно обновлена!", Toast.LENGTH_SHORT).show()
 
-                            val intent = Intent(this@ChangeMangaActivity, MainActivity::class.java).apply {
-                                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                putExtra("SELECT_TAB", "home")
-                            }
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(this@ChangeMangaActivity, "Ошибка при обновлении манги", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@ChangeMangaActivity, MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            putExtra("SELECT_TAB", "home")
                         }
+                        startActivity(intent)
+                        finish()
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@ChangeMangaActivity, "Ошибка при обновлении манги: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
@@ -304,7 +304,6 @@ class ChangeMangaActivity : AppCompatActivity() {
 
     private fun deleteMangaFromDatabase() {
         currentManga?.let { manga ->
-            // Подтверждение удаления
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Удаление манги")
                 .setMessage("Вы уверены, что хотите удалить \"${manga.name}\"?")
@@ -321,20 +320,15 @@ class ChangeMangaActivity : AppCompatActivity() {
     private fun performDelete(mangaId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val result = repository.deleteManga(mangaId)
+                repository.deleteManga(mangaId)
                 withContext(Dispatchers.Main) {
-                    if (result > 0) {
-                        Toast.makeText(this@ChangeMangaActivity, "Манга успешно удалена!", Toast.LENGTH_SHORT).show()
-
-                        val intent = Intent(this@ChangeMangaActivity, MainActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            putExtra("SELECT_TAB", "home")
-                        }
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this@ChangeMangaActivity, "Ошибка при удалении манги", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ChangeMangaActivity, "Манга успешно удалена!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@ChangeMangaActivity, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        putExtra("SELECT_TAB", "home")
                     }
+                    startActivity(intent)
+                    finish()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
