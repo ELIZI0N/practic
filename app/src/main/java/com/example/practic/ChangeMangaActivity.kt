@@ -245,21 +245,45 @@ class ChangeMangaActivity : AppCompatActivity() {
             return
         }
 
+        // Проверка длины названия (не более 250 символов)
+        if (title.length > 250) {
+            Toast.makeText(this, "Название не должно превышать 250 символов", Toast.LENGTH_SHORT).show()
+            etTitle.error = "Максимум 250 символов"
+            return
+        }
+
+        // Проверка длины авторов (не более 100 символов)
+        if (author.length > 100) {
+            Toast.makeText(this, "Имена авторов не должны превышать 100 символов", Toast.LENGTH_SHORT).show()
+            etAuthor.error = "Максимум 100 символов"
+            return
+        }
+
+        // Проверка длины описания (не более 2000 символов)
+        if (description.length > 2000) {
+            Toast.makeText(this, "Описание не должно превышать 2000 символов", Toast.LENGTH_SHORT).show()
+            etDescription.error = "Максимум 2000 символов"
+            return
+        }
+
         val releaseYear = releaseYearText.toIntOrNull()
         val chapters = chaptersText.toIntOrNull()
 
         if (releaseYear == null) {
             Toast.makeText(this, "Год релиза должен быть числом", Toast.LENGTH_SHORT).show()
+            etReleaseYear.error = "Введите корректный год"
             return
         }
 
         if (releaseYear < 1770 || releaseYear > 2025) {
             Toast.makeText(this, "Год релиза должен быть между 1770 и 2025", Toast.LENGTH_SHORT).show()
+            etReleaseYear.error = "Год должен быть между 1770 и 2025"
             return
         }
 
         if (chapters == null || chapters <= 0) {
             Toast.makeText(this, "Количество глав должно быть положительным числом", Toast.LENGTH_SHORT).show()
+            etChapters.error = "Введите положительное число"
             return
         }
 
@@ -293,7 +317,7 @@ class ChangeMangaActivity : AppCompatActivity() {
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@ChangeMangaActivity, "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ChangeMangaActivity, "Ошибка при обновлении манги: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -304,7 +328,6 @@ class ChangeMangaActivity : AppCompatActivity() {
 
     private fun deleteMangaFromDatabase() {
         currentManga?.let { manga ->
-            // Подтверждение удаления
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Удаление манги")
                 .setMessage("Вы уверены, что хотите удалить \"${manga.name}\"?")
@@ -325,7 +348,6 @@ class ChangeMangaActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (result > 0) {
                         Toast.makeText(this@ChangeMangaActivity, "Манга успешно удалена!", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this@ChangeMangaActivity, MainActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                             putExtra("SELECT_TAB", "home")
@@ -344,4 +366,3 @@ class ChangeMangaActivity : AppCompatActivity() {
         }
     }
 }
-

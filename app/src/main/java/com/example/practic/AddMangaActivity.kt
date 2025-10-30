@@ -174,9 +174,31 @@ class AddMangaActivity : AppCompatActivity() {
         val chaptersText = etChapters.text.toString().trim()
         val description = etDescription.text.toString().trim()
 
+        // Проверка на пустые поля
         if (title.isEmpty() || type.isEmpty() || author.isEmpty() ||
             releaseYearText.isEmpty() || chaptersText.isEmpty() || description.isEmpty()) {
             Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Проверка длины названия (не более 250 символов)
+        if (title.length > 250) {
+            Toast.makeText(this, "Название не должно превышать 250 символов", Toast.LENGTH_SHORT).show()
+            etTitle.error = "Максимум 250 символов"
+            return
+        }
+
+        // Проверка длины авторов (не более 100 символов)
+        if (author.length > 100) {
+            Toast.makeText(this, "Имена авторов не должны превышать 100 символов", Toast.LENGTH_SHORT).show()
+            etAuthor.error = "Максимум 100 символов"
+            return
+        }
+
+        // Проверка длины описания (не более 2000 символов)
+        if (description.length > 2000) {
+            Toast.makeText(this, "Описание не должно превышать 2000 символов", Toast.LENGTH_SHORT).show()
+            etDescription.error = "Максимум 2000 символов"
             return
         }
 
@@ -190,22 +212,26 @@ class AddMangaActivity : AppCompatActivity() {
 
         if (releaseYear == null) {
             Toast.makeText(this, "Год релиза должен быть числом", Toast.LENGTH_SHORT).show()
+            etReleaseYear.error = "Введите корректный год"
             return
         }
 
         if (releaseYear < 1770 || releaseYear > 2025) {
             Toast.makeText(this, "Год релиза должен быть между 1770 и 2025", Toast.LENGTH_SHORT).show()
+            etReleaseYear.error = "Год должен быть между 1770 и 2025"
             return
         }
 
         if (chapters == null || chapters <= 0) {
             Toast.makeText(this, "Количество глав должно быть положительным числом", Toast.LENGTH_SHORT).show()
+            etChapters.error = "Введите положительное число"
             return
         }
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val allMangas = repository.getAllMangas(null, null)
+                // Получаем все манги для определения максимальной популярности
+                val allMangas = repository.getAllMangas()
                 val maxPopularity = allMangas.maxByOrNull { it.popularity ?: 0 }?.popularity ?: 0
                 val newPopularity = maxPopularity + 1
 
@@ -227,6 +253,10 @@ class AddMangaActivity : AppCompatActivity() {
                     if (result != -1L) {
                         Toast.makeText(this@AddMangaActivity, "Манга успешно добавлена!", Toast.LENGTH_SHORT).show()
 
+                        // Очистка формы после успешного добавления
+                        clearForm()
+
+                        // Возврат на главный экран
                         val intent = Intent(this@AddMangaActivity, MainActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                             putExtra("SELECT_TAB", "home")
@@ -251,8 +281,16 @@ class AddMangaActivity : AppCompatActivity() {
         etReleaseYear.text?.clear()
         etChapters.text?.clear()
         etDescription.text?.clear()
+        spinnerType.setSelection(0)
         imagePreview.setImageResource(android.R.color.transparent)
         selectedImageUri = null
         selectedImagePath = null
+
+        // Очистка ошибок
+        etTitle.error = null
+        etAuthor.error = null
+        etReleaseYear.error = null
+        etChapters.error = null
+        etDescription.error = null
     }
 }
